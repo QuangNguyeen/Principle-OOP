@@ -6,51 +6,27 @@ protected:
     string GioiTinh;
     int NamSinh;
 public:
-    CanBo(){};
-    void setHoTen(string HoTen){
-        this->HoTen = HoTen;
-    }
-    void setGioiTinh(string GioiTinh){
-        this->GioiTinh = GioiTinh;
-    }
-    void setNamSinh(int namsinh){
-        this->NamSinh = namsinh;
-    }
-    string getHoTen(){
-        return HoTen;
-    }
-    string getGioTinh(){
-        return GioiTinh;
-    }
-    int getNamSinh(){
-        return NamSinh;
-    }
-    friend istream& operator>>(istream& in, CanBo& canBo);
-    friend ostream& operator<<(ostream& out, CanBo& canBo);
-    virtual void input(){};
-    virtual void output(){};
+    CanBo() : NamSinh(){};
     int Tuoi(){
         return 2023 - this->NamSinh;
     }
-    virtual bool NghiHuu(){};
-    virtual double Luong(){};
+    virtual void input(){
+        cout << "Nhap Ho Ten: "; cin >> HoTen;
+        cout << "Nhap Gioi Tinh: "; cin >> GioiTinh;
+        cout << "Nhap Nam Sinh: "; cin >> NamSinh;
+    };
+    virtual void output(){
+        cout << "HoTen: " << "\t" << HoTen << "\t" << "GioiTinh: " << GioiTinh << "Tuoi: " << Tuoi();
+    };
+    virtual bool NghiHuu() = 0;
+    virtual double Luong() = 0;
 };
-istream& operator>>(istream& in, CanBo& canBo){
-    cout << "Nhap Ho Ten: "; in >> canBo.HoTen;
-    cout << "Nhap Gioi Tinh: "; in >> canBo.GioiTinh;
-    cout << "Nhap Nam Sinh: "; in >> canBo.NamSinh;
-    return in;
-}
-ostream& operator<<(ostream& out, CanBo& canBo){
-    out << "HoTen: " << "\t" << canBo.HoTen << "\t" << "GioiTinh: " << canBo.GioiTinh << "NamSinh: " << canBo.NamSinh;
-    return out;
-}
 class BienChe : public CanBo{
 private:
     string DonVi;
     double HSLuong;
 public:
-    BienChe(){}; // Constructor
+    BienChe() : HSLuong(){}; // Constructor
     bool NghiHuu(){
         return (Tuoi() >= 60);
     }
@@ -62,23 +38,21 @@ public:
         }
     }
     void input(){
-        cout << "Nhap Ho Ten: ";
-        cin >> this->HoTen;
-        cout << "Nhap GioiTinh: ";
-        cin >> this->GioiTinh;
-        cout << "Nhap Nam Sinh: ";
-        cin >> this->NamSinh;
+        CanBo :: input();
         cout << "Nhap Don Vi: ";
-        cin >> this->DonVi;
+        cin >> DonVi;
         cout << "Nhap He So Luong: ";
-        cin >> this->HSLuong;
+        cin >> HSLuong;
     }
     void output(){
-        cout << this->HoTen << "\t"
-        << this->GioiTinh <<"\t"
-        << this->NamSinh << "\t"
-        << this->DonVi << "\t"
-        << this->HSLuong << endl;
+        CanBo::output();
+        cout <<"\t"<< DonVi << "\t"<< HSLuong << endl;
+        if(NghiHuu()){
+            cout << "Da Nghi Huu \t";
+        } else {
+            cout << "Chua Nghi Huu \t";
+        }
+        cout << Luong();
     }
 };
 class HopDong: public CanBo{
@@ -89,8 +63,6 @@ private:
 public:
     HopDong(){};
     ~HopDong(){};
-    friend istream& operator>>(istream& in, HopDong& hopDong);
-    friend ostream& operator<<(ostream& out, HopDong& hopDong);
     bool NghiHuu(){
         return (namCongTac >= 35);
     }
@@ -102,32 +74,35 @@ public:
         }
     }
     void input(){
-        cout << "Nhap Ho Ten: ";
-        cin >> this->HoTen;
-        cout << "Nhap GioiTinh: ";
-        cin >> this->GioiTinh;
-        cout << "Nhap Nam Sinh: ";
-        cin >> this->NamSinh;
+        CanBo::input();
         cout << "Nhap Muc Luong: ";
-        cin >> this->mucLuong;
+        cin >> mucLuong;
         cout << "Nhap He So Tham Nien: ";
-        cin >> this->heSoThamNien;
+        cin >> heSoThamNien;
     }
     void output(){
-        cout << this->HoTen << "\t"
-             << this->GioiTinh <<"\t"
-             << this->NamSinh << "\t"
-             << this->mucLuong<< "\t"
-             << this->heSoThamNien << endl;
+       CanBo::output();
+       cout << mucLuong<< "\t" << heSoThamNien << endl;
+       if(NghiHuu()){
+           cout << "Da Nghi Huu \t";
+       } else {
+           cout << "Chua Nghi Huu \t";
+       }
+       cout << Luong();
     }
 };
 int main(){
-    CanBo *canBo1 = new BienChe;
-    CanBo *canBo2 = new HopDong;
-    canBo1->input();
-    canBo1->output();
+    cout << "Hai Can Bo\n";
+    CanBo *listCanBo[2];
+    cout << "Bien Che: \n";
+    listCanBo[0] = new BienChe;
+    listCanBo[0]->input();
+    cout << "\nHop Dong: \n";
+    listCanBo[1] = new HopDong;
+    listCanBo[1]->input();
     cout << endl;
-    canBo2->input();
-    canBo2->output();
+    listCanBo[0]->output();
+    cout << "\n";
+    listCanBo[1]->output();
     return 0;
 }
