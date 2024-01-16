@@ -92,7 +92,15 @@ int main() {
     for (int i = 0; i < n; i++) {
         listVehicles[i]->output();
     }
+    PhuongTien *min = listVehicles[0];
 
+    for(int i = 0; i < n; i++){
+        if(min->maxSpeed() > listVehicles[i]->maxSpeed()){
+            min = listVehicles[i];
+        }
+    }
+    cout << "Min: ";
+    min->output();
     // Don't forget to deallocate memory
     for (int i = 0; i < n; i++) {
         delete listVehicles[i];
