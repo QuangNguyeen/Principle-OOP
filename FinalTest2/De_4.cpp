@@ -64,13 +64,14 @@ public:
         return out;
     }
     // 1 la ManHinh, 2 la MayTinh
-    int getType(){
-        if(printPrice() == 500000){
-            return 1;
-        } else if(printPrice() == 15000000){
-            return 2;
-        }
-    }
+//    int getType() const {
+//        if(printPrice() == 500000){
+//            return 1;
+//        } else if(printPrice() == 15000000){
+//            return 2;
+//        }
+//    }
+    int getType();
 };
 class MayTinh : public ThietBi {
 private:
@@ -134,6 +135,16 @@ public:
         return out;
     }
 };
+
+int ThietBi::getType(){
+    {
+        if(dynamic_cast<ManHinh*>(this)){
+            return 1 ;
+        } else if(dynamic_cast<MayTinh*>(this)){
+            return 2;
+        }
+    }
+}
 int main(){
     int n;
     do{
